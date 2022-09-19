@@ -28,13 +28,15 @@ export default function EventForm({
   function handleFormSubmit(e) {
     e.preventDefault();
     console.log(values);
-    createEvent({
-      ...values,
-      id: cuid(),
-      hostedBy: 'Bob',
-      attendees: [],
-      hostPhotoURL: '/assets/user.png',
-    });
+    selectedEvent
+      ? updateEvent({ ...selectedEvent, ...values })
+      : createEvent({
+          ...values,
+          id: cuid(),
+          hostedBy: 'Bob',
+          attendees: [],
+          hostPhotoURL: '/assets/user.png',
+        });
     setFormOpen(false);
   }
 
