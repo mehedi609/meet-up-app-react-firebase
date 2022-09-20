@@ -4,7 +4,7 @@ import SignedOutMenu from './SignedOutMenu';
 import { useState } from 'react';
 import SignedInMenu from './SignedInMenu';
 
-export default function NavBar({ setFormOpen }) {
+export default function NavBar() {
   const history = useHistory();
   const [authenticated, setAuthenticated] = useState(false);
 
