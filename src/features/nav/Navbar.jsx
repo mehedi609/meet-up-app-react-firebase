@@ -21,9 +21,11 @@ export default function NavBar({ setFormOpen }) {
           Meet-UP
         </Menu.Item>
         <Menu.Item as={NavLink} exact to="/events" name="Events" />
-        <Menu.Item as={NavLink} exact to="/createEvent">
-          <Button positive inverted content="Create Event" />
-        </Menu.Item>
+        {authenticated && (
+          <Menu.Item as={NavLink} exact to="/createEvent">
+            <Button positive inverted content="Create Event" />
+          </Menu.Item>
+        )}
         {authenticated ? (
           <SignedInMenu signOut={handleSignOut} />
         ) : (
