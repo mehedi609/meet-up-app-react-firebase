@@ -5,6 +5,7 @@ import EventDashboard from 'features/events/eventDashboard/EventDashboard';
 import HomePage from 'features/home/HopePage';
 import EventDetailedPage from 'features/events/eventDetailed/EventDetailedPage';
 import EventForm from 'features/events/eventForm/EventForm';
+import Sandbox from 'features/sandbox/Sandbox';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                 path={['/createEvent', '/manage/:id']}
                 component={EventForm}
               />
+              <Route exact path="/sandbox" component={Sandbox} />
             </Container>
           </>
         )}
