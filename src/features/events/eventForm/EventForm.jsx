@@ -10,6 +10,7 @@ import {
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import CustomTextInput from 'app/common/form/CustomTextInput';
+import CustomTextArea from '../../../app/common/form/CustomTextArea';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEvent).find(
@@ -61,7 +62,11 @@ export default function EventForm({ match, history }) {
           <Header sub color="teal" content="Event Details" />
           <CustomTextInput name="title" placeholder="Event title" />
           <CustomTextInput name="category" placeholder="Category" />
-          <CustomTextInput name="description" placeholder="Description" />
+          <CustomTextArea
+            name="description"
+            placeholder="Description"
+            rows={4}
+          />
 
           <Header sub color="teal" content="Event Location Details" />
           <CustomTextInput name="city" placeholder="City" />
