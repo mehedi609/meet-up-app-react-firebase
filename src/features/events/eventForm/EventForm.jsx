@@ -1,4 +1,4 @@
-import { Button, Header, Segment, FormField } from 'semantic-ui-react';
+import { Button, Header, Segment, FormField, Label } from 'semantic-ui-react';
 import { useState } from 'react';
 import cuid from 'cuid';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,8 @@ import {
   selectEvent,
   updateEvent,
 } from 'features/events/eventSlice';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEvent).find(
@@ -27,11 +28,6 @@ export default function EventForm({ match, history }) {
 
   const [values, setValues] = useState(initialValues);
 
-  function handleInputChange(e) {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  }
-
   function handleFormSubmit(e) {
     e.preventDefault();
     selectedEvent
@@ -48,16 +44,33 @@ export default function EventForm({ match, history }) {
     history.push('/events');
   }
 
+  const validationSchema = Yup.object({
+    title: Yup.string().required('You must provide a title'),
+    category: Yup.string().required('You must provide a category'),
+    description: Yup.string().required('You must provide a description'),
+    city: Yup.string().required('Please provide a city'),
+    venue: Yup.string().required('Please provide a venue'),
+    date: Yup.string().required('Please provide a date'),
+  });
+
   return (
     <Segment clearing>
       <Header content={selectedEvent ? 'Edit the event' : 'Create new event'} />
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={(values) => console.log(values)}
       >
         <Form className="ui form">
           <FormField>
             <Field name="title" placeholder="Event title" />
+            <ErrorMessage name="title">
+              {(errorMessage) => (
+                <Label basic color="red" pointing>
+                  {errorMessage}
+                </Label>
+              )}
+            </ErrorMessage>
           </FormField>
           <FormField>
             <Field name="category" placeholder="Category" />
