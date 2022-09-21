@@ -1,4 +1,4 @@
-import { sampleData } from '../../api/sample-data';
+import { sampleData } from 'api/sample-data';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -35,7 +35,7 @@ const eventSlice = createSlice({
 
 export const { createEvent, updateEvent, deleteEvent } = eventSlice.actions;
 
-export const eventState = (state) => state.event.events;
+export const selectEvent = (state) => state.event.events;
 
 const eventReducer = eventSlice.reducer;
 

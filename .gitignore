@@ -12,7 +12,7 @@
 /build
 
 # WebstormProjects
-.idea
+.idea/
 
 # misc
 .DS_Store
