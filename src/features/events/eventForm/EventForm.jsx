@@ -1,5 +1,4 @@
-import { Button, Header, Segment, FormField, Label } from 'semantic-ui-react';
-import { useState } from 'react';
+import { Button, Header, Segment } from 'semantic-ui-react';
 import cuid from 'cuid';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,8 +7,9 @@ import {
   selectEvent,
   updateEvent,
 } from 'features/events/eventSlice';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import CustomTextInput from 'app/common/form/CustomTextInput';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEvent).find(
@@ -26,10 +26,7 @@ export default function EventForm({ match, history }) {
     date: '',
   };
 
-  const [values, setValues] = useState(initialValues);
-
-  function handleFormSubmit(e) {
-    e.preventDefault();
+  function handleFormSubmit(values) {
     selectedEvent
       ? dispatch(updateEvent({ ...selectedEvent, ...values }))
       : dispatch(
@@ -55,38 +52,22 @@ export default function EventForm({ match, history }) {
 
   return (
     <Segment clearing>
-      <Header content={selectedEvent ? 'Edit the event' : 'Create new event'} />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => handleFormSubmit(values)}
       >
         <Form className="ui form">
-          <FormField>
-            <Field name="title" placeholder="Event title" />
-            <ErrorMessage name="title">
-              {(errorMessage) => (
-                <Label basic color="red" pointing>
-                  {errorMessage}
-                </Label>
-              )}
-            </ErrorMessage>
-          </FormField>
-          <FormField>
-            <Field name="category" placeholder="Category" />
-          </FormField>
-          <FormField>
-            <Field name="description" placeholder="Description" />
-          </FormField>
-          <FormField>
-            <Field name="city" placeholder="City" />
-          </FormField>
-          <FormField>
-            <Field name="venue" placeholder="Venue" />
-          </FormField>
-          <FormField>
-            <Field name="date" placeholder="Date" type="date" />
-          </FormField>
+          <Header sub color="teal" content="Event Details" />
+          <CustomTextInput name="title" placeholder="Event title" />
+          <CustomTextInput name="category" placeholder="Category" />
+          <CustomTextInput name="description" placeholder="Description" />
+
+          <Header sub color="teal" content="Event Location Details" />
+          <CustomTextInput name="city" placeholder="City" />
+          <CustomTextInput name="venue" placeholder="Venue" />
+          <CustomTextInput name="date" placeholder="Date" type="date" />
+
           <Button type="submit" floated="right" positive content="Submit" />
           <Button
             as={Link}
