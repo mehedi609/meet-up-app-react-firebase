@@ -1,30 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 import EventList from './EventList';
-import { deleteEvent, selectEvent } from '../eventSlice';
+import { selectEvent } from 'features/events/eventSlice';
 
 export default function EventDashboard() {
   const events = useSelector(selectEvent);
-  const dispatch = useDispatch();
-
-  // function handleCreateEvent(newEvent) {
-  //   setEvents([...events, newEvent]);
-  // }
-  //
-  // function handleUpdateEvent(updatedEvent) {
-  //   setEvents(
-  //     events.map((evt) => (evt.id === updatedEvent.id ? updatedEvent : evt)),
-  //   );
-  // }
-
-  function handleDeleteEvent(eventId) {
-    dispatch(deleteEvent(eventId));
-  }
 
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventList events={events} deleteEvent={handleDeleteEvent} />
+        <EventList events={events} />
       </Grid.Column>
       <Grid.Column width={6}>
         <h2>Event Filters</h2>

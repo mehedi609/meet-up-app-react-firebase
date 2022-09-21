@@ -1,7 +1,12 @@
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Button, Icon, Item, List, Segment } from 'semantic-ui-react';
 import EventListAttendee from './EventListAttendee';
+import { deleteEvent } from 'features/events/eventSlice';
 
-export default function EventListItem({ event, selectEvent, deleteEvent }) {
+export default function EventListItem({ event }) {
+  const dispatch = useDispatch();
+
   return (
     <Segment.Group>
       <Segment>
@@ -23,9 +28,10 @@ export default function EventListItem({ event, selectEvent, deleteEvent }) {
       </Segment>
       <Segment secondary>
         <List horizontal>
-          {event.attendees.map((attendee) => (
-            <EventListAttendee key={attendee.id} attendee={attendee} />
-          ))}
+          {event.attendees &&
+            event.attendees.map((attendee) => (
+              <EventListAttendee key={attendee.id} attendee={attendee} />
+            ))}
         </List>
       </Segment>
       <Segment clearing>
@@ -34,13 +40,14 @@ export default function EventListItem({ event, selectEvent, deleteEvent }) {
           color="red"
           floated="right"
           content="Delete"
-          onClick={() => deleteEvent(event.id)}
+          onClick={() => dispatch(deleteEvent(event.id))}
         />
         <Button
           color="teal"
           floated="right"
           content="View"
-          onClick={() => selectEvent(event)}
+          as={Link}
+          to={`/events/${event.id}`}
         />
       </Segment>
     </Segment.Group>

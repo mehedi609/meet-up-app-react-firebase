@@ -1,4 +1,4 @@
-import { sampleData } from 'api/sample-data';
+import { sampleData } from 'app/api/sample-data';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
