@@ -1,9 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { decrement, increment, selectCounter } from './testSlice';
+import {
+  decrement,
+  increment,
+  selectCounter,
+} from 'features/sandbox/testSlice';
 import { Button } from 'semantic-ui-react';
+import { openModal } from 'app/common/modals/modalSlice';
+import { config } from '../../app/config';
 
 export default function Sandbox() {
-  const  value  = useSelector(selectCounter);
+  const value = useSelector(selectCounter);
   const dispatch = useDispatch();
 
   return (
@@ -19,6 +25,18 @@ export default function Sandbox() {
         onClick={() => dispatch(decrement(5))}
         content="Decrement"
         color="red"
+      />
+      <Button
+        content="Open Modal"
+        color="teal"
+        onClick={() =>
+          dispatch(
+            openModal({
+              modalType: config.MODAL.TEST_MODAL,
+              modalProps: { data: value },
+            }),
+          )
+        }
       />
     </div>
   );
