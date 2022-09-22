@@ -6,8 +6,16 @@ export default function ModalWrapper({ children, size, header }) {
   const dispatch = useDispatch();
 
   return (
-    <Modal open={true} onClose={() => dispatch(closeModal())} size={size}>
-      {header && <Modal.Header>{<header></header>}</Modal.Header>}
+    <Modal
+      open={true}
+      onClose={() => dispatch(closeModal())}
+      size={size}
+      closeOnEscape={true}
+      closeOnDimmerClick={true}
+      dimmer="blurring"
+      closeIcon
+    >
+      {header && <Modal.Header>{header}</Modal.Header>}
       <Modal.Content>{children}</Modal.Content>
     </Modal>
   );
