@@ -10,9 +10,11 @@ import {
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import CustomTextInput from 'app/common/form/CustomTextInput';
-import CustomTextArea from '../../../app/common/form/CustomTextArea';
-import CustomSelectInput from '../../../app/common/form/CustomSelectInput';
-import { categoryOptions } from '../../../app/api/categoryOptions';
+import CustomTextArea from 'app/common/form/CustomTextArea';
+import CustomSelectInput from 'app/common/form/CustomSelectInput';
+import { categoryOptions } from 'app/api/categoryOptions';
+import CustomDateInput from 'app/common/form/CustomDateInput';
+import { config } from 'app/config';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEvent).find(
@@ -77,7 +79,12 @@ export default function EventForm({ match, history }) {
           <Header sub color="teal" content="Event Location Details" />
           <CustomTextInput name="city" placeholder="City" />
           <CustomTextInput name="venue" placeholder="Venue" />
-          <CustomTextInput name="date" placeholder="Date" type="date" />
+          <CustomDateInput
+            name="date"
+            placeholderText="Click to select a date"
+            showTimeSelect
+            dateFormat={config.DATE.DATE_FORMAT}
+          />
 
           <Button type="submit" floated="right" positive content="Submit" />
           <Button

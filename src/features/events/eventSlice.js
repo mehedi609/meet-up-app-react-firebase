@@ -33,10 +33,11 @@ const eventSlice = createSlice({
   },
 });
 
-export const { createEvent, updateEvent, deleteEvent } = eventSlice.actions;
+export const {
+  reducer,
+  actions: { createEvent, updateEvent, deleteEvent },
+} = eventSlice;
 
 export const selectEvent = (state) => state.event.events;
 
-const eventReducer = eventSlice.reducer;
-
-export default eventReducer;
+export { reducer as eventReducer };
