@@ -1,10 +1,15 @@
-import ModalWrapper from '../../app/common/modals/ModalWrapper';
+import ModalWrapper from 'app/common/modals/ModalWrapper';
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { Button } from 'semantic-ui-react';
 import CustomTextInput from 'app/common/form/CustomTextInput';
+import { useDispatch } from 'react-redux';
+import { signInUser } from 'features/auth/authSlice';
+import { closeModal } from 'app/common/modals/modalSlice';
 
 export default function LoginForm() {
+  const dispatch = useDispatch();
+
   const initialValues = { email: '', password: '' };
   const validationSchema = Yup.object({
     email: Yup.string().required().email(),
@@ -17,7 +22,9 @@ export default function LoginForm() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
-          alert(JSON.stringify(values, null, 2));
+          dispatch(signInUser(values));
+          setSubmitting(false);
+          dispatch(closeModal());
         }}
       >
         {({ dirty, isSubmitting, isValid }) => (

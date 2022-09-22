@@ -17,7 +17,7 @@ export default function HomePage({ history }) {
             src="/assets/logo.png"
             style={{ marginBottom: 12 }}
           />
-          Re-vents
+          Meet-Up
         </Header>
         <Button onClick={() => history.push('/events')} size="huge" inverted>
           Get started
