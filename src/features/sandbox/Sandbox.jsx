@@ -7,6 +7,7 @@ import {
 import { Button } from 'semantic-ui-react';
 import { openModal } from 'app/common/modals/modalSlice';
 import { config } from '../../app/config';
+import TestPlaceInput from './TestPlaceInput';
 
 export default function Sandbox() {
   const value = useSelector(selectCounter);
@@ -38,6 +39,9 @@ export default function Sandbox() {
           )
         }
       />
+      <div style={{ marTop: 20 }}>
+        <TestPlaceInput />
+      </div>
     </div>
   );
 }
