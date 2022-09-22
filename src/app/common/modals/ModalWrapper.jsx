@@ -2,7 +2,11 @@ import { useDispatch } from 'react-redux';
 import { Modal } from 'semantic-ui-react';
 import { closeModal } from './modalSlice';
 
-export default function ModalWrapper({ children, size, header }) {
+export default function ModalWrapper({
+  children,
+  size = 'mini',
+  header = 'Default Header',
+}) {
   const dispatch = useDispatch();
 
   return (

@@ -6,6 +6,7 @@ import {
 } from 'features/sandbox/testSlice';
 import { Button } from 'semantic-ui-react';
 import { openModal } from 'app/common/modals/modalSlice';
+import { config } from '../../app/config';
 
 export default function Sandbox() {
   const value = useSelector(selectCounter);
@@ -30,7 +31,10 @@ export default function Sandbox() {
         color="teal"
         onClick={() =>
           dispatch(
-            openModal({ modalType: 'TestModal', modalProps: { data: value } }),
+            openModal({
+              modalType: config.MODAL.TEST_MODAL,
+              modalProps: { data: value },
+            }),
           )
         }
       />
