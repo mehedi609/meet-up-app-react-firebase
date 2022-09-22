@@ -1,8 +1,8 @@
 import { NavLink, useHistory } from 'react-router-dom';
-import { Button, Container, Menu } from 'semantic-ui-react';
-import SignedOutMenu from './SignedOutMenu';
 import { useState } from 'react';
-import SignedInMenu from './SignedInMenu';
+import { Button, Container, Menu } from 'semantic-ui-react';
+import SignedOutMenu from 'features/nav/SignedOutMenu';
+import SignedInMenu from 'features/nav/SignedInMenu';
 
 export default function NavBar() {
   const history = useHistory();

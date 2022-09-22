@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { decrement, increment, selectCounter } from './testSlice';
+import { decrement, increment, selectCounter } from 'features/sandbox/testSlice';
 import { Button } from 'semantic-ui-react';
 
 export default function Sandbox() {

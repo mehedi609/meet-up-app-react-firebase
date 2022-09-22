@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button, Icon, Item, List, Segment } from 'semantic-ui-react';
-import EventListAttendee from './EventListAttendee';
+import EventListAttendee from 'features/events/eventDashboard/EventListAttendee';
 import { deleteEvent } from 'features/events/eventSlice';
 import { format } from 'date-fns';
 import { config } from 'app/config';

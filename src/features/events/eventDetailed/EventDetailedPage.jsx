@@ -1,8 +1,8 @@
 import { Grid } from 'semantic-ui-react';
-import EventDetailedHeader from './EventDetailedHeader';
-import EventDetailedInfo from './EventDetailedInfo';
-import EventDetailedChat from './EventDetailedChat';
-import EventDetailedSidebar from './EventDetailedSidebar';
+import EventDetailedHeader from 'features/events/eventDetailed/EventDetailedHeader';
+import EventDetailedInfo from 'features/events/eventDetailed/EventDetailedInfo';
+import EventDetailedChat from 'features/events/eventDetailed/EventDetailedChat';
+import EventDetailedSidebar from 'features/events/eventDetailed/EventDetailedSidebar';
 import { useSelector } from 'react-redux';
 import { selectEvent } from 'features/events/eventSlice';
 

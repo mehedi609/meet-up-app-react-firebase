@@ -1,4 +1,4 @@
-import EventListItem from './EventListItem';
+import EventListItem from 'features/events/eventDashboard/EventListItem';
 
 export default function EventList({ events }) {
   return (
