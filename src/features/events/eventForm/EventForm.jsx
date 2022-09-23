@@ -1,3 +1,4 @@
+/*global google*/
 import { Button, Header, Segment } from 'semantic-ui-react';
 import cuid from 'cuid';
 import { Link } from 'react-router-dom';
@@ -73,7 +74,7 @@ export default function EventForm({ match, history }) {
         validationSchema={validationSchema}
         onSubmit={(values) => handleFormSubmit(values)}
       >
-        {({ isValid, dirty, isSubmitting }) => (
+        {({ isValid, dirty, isSubmitting, values }) => (
           <Form className="ui form">
             <Header sub color="teal" content="Event Details" />
             <CustomTextInput name="title" placeholder="Event title" />
@@ -90,7 +91,16 @@ export default function EventForm({ match, history }) {
 
             <Header sub color="teal" content="Event Location Details" />
             <CustomPlaceInput name="city" placeholder="City" />
-            <CustomTextInput name="venue" placeholder="Venue" />
+            <CustomPlaceInput
+              name="venue"
+              placeholder="Venue"
+              disabled={!values.city.latLng}
+              options={{
+                location: new google.maps.LatLng(values.city.latLng),
+                radius: 2000,
+                types: ['establishment'],
+              }}
+            />
             <CustomDateInput
               name="date"
               placeholderText="Click to select a date"

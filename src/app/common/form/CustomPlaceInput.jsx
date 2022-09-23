@@ -34,6 +34,7 @@ export default function CustomPlaceInput({ options, ...props }) {
       onChange={handleChange}
       onSelect={handleSelect}
       searchOptions={options}
+      shouldFetchSuggestions={field.value.address.length >= 2}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <FormField error={meta.touched && !!meta.error}>
@@ -63,9 +64,8 @@ export default function CustomPlaceInput({ options, ...props }) {
               <List selection>
                 {suggestions.map((suggestion) => (
                   <List.Item
-                    {...getSuggestionItemProps(suggestion, {
-                      key: suggestion.id,
-                    })}
+                    {...getSuggestionItemProps(suggestion)}
+                    key={suggestion.placeId}
                   >
                     <List.Header>
                       {suggestion.formattedSuggestion.mainText}
