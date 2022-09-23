@@ -1,9 +1,16 @@
-import { FormField, Label } from 'semantic-ui-react';
-import { ErrorMessage, useField } from 'formik';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { FormField, Label, List, Segment } from 'semantic-ui-react';
+import { useField } from 'formik';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 
-export default function CustomPlaceInput({ label, options, ...props }) {
+export default function CustomPlaceInput({ options, ...props }) {
   const [field, meta, helpers] = useField(props);
+
+  function handleChange(address) {
+    helpers.setValue({ address });
+  }
 
   function handleSelect(address) {
     geocodeByAddress(address)
@@ -16,17 +23,63 @@ export default function CustomPlaceInput({ label, options, ...props }) {
       .catch((error) => helpers.setError(error));
   }
 
+  function handleBlur(e) {
+    field.onBlur(e);
+    if (!field.value.latLng) helpers.setValue({ address: '', latLng: null });
+  }
+
   return (
-    <FormField error={meta.touched && !!meta.error}>
-      <label>{label}</label>
-      <input {...field} {...props} />
-      <ErrorMessage name={field.name}>
-        {(errorMessage) => (
-          <Label basic color="red" pointing>
-            {errorMessage}
-          </Label>
-        )}
-      </ErrorMessage>
-    </FormField>
+    <PlacesAutocomplete
+      value={field.value.address}
+      onChange={handleChange}
+      onSelect={handleSelect}
+      searchOptions={options}
+    >
+      {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+        <FormField error={meta.touched && !!meta.error}>
+          <input
+            {...getInputProps({
+              name: field.name,
+              onBlur: handleBlur,
+              ...props,
+            })}
+          />
+          {meta.touched && meta.error && (
+            <Label basic color="red" pointing>
+              {meta.error.address}
+            </Label>
+          )}
+
+          {suggestions?.length > 0 && (
+            <Segment
+              loading={loading}
+              style={{
+                marginTop: 0,
+                position: 'absolute',
+                zIndex: 1000,
+                width: '100%',
+              }}
+            >
+              <List selection>
+                {suggestions.map((suggestion) => (
+                  <List.Item
+                    {...getSuggestionItemProps(suggestion, {
+                      key: suggestion.id,
+                    })}
+                  >
+                    <List.Header>
+                      {suggestion.formattedSuggestion.mainText}
+                    </List.Header>
+                    <List.Description>
+                      {suggestion.formattedSuggestion.secondaryText}
+                    </List.Description>
+                  </List.Item>
+                ))}
+              </List>
+            </Segment>
+          )}
+        </FormField>
+      )}
+    </PlacesAutocomplete>
   );
 }

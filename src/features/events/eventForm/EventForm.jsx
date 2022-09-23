@@ -15,6 +15,7 @@ import CustomSelectInput from 'app/common/form/CustomSelectInput';
 import { categoryOptions } from 'app/api/categoryOptions';
 import CustomDateInput from 'app/common/form/CustomDateInput';
 import { config } from 'app/config';
+import CustomPlaceInput from '../../../app/common/form/CustomPlaceInput';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEvent).find(
@@ -26,8 +27,14 @@ export default function EventForm({ match, history }) {
     title: '',
     category: '',
     description: '',
-    city: '',
-    venue: '',
+    city: {
+      address: '',
+      latLng: null,
+    },
+    venue: {
+      address: '',
+      latLng: null,
+    },
     date: '',
   };
 
@@ -50,8 +57,12 @@ export default function EventForm({ match, history }) {
     title: Yup.string().required('You must provide a title'),
     category: Yup.string().required('You must provide a category'),
     description: Yup.string().required('You must provide a description'),
-    city: Yup.string().required('Please provide a city'),
-    venue: Yup.string().required('Please provide a venue'),
+    city: Yup.object().shape({
+      address: Yup.string().required('City is required'),
+    }),
+    venue: Yup.object().shape({
+      address: Yup.string().required('Venue is required'),
+    }),
     date: Yup.string().required('Please provide a date'),
   });
 
@@ -78,7 +89,7 @@ export default function EventForm({ match, history }) {
             />
 
             <Header sub color="teal" content="Event Location Details" />
-            <CustomTextInput name="city" placeholder="City" />
+            <CustomPlaceInput name="city" placeholder="City" />
             <CustomTextInput name="venue" placeholder="Venue" />
             <CustomDateInput
               name="date"
