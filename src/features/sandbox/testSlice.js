@@ -5,6 +5,7 @@ import {
   asyncActionStart,
 } from '../../app/async/asyncSlice';
 import { delay } from '../../app/common/util/util';
+import { toast } from 'react-toastify';
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -45,6 +46,7 @@ export const decrement = (amount) => async (dispatch) => {
     dispatch(asyncActionFinish());
   } catch (e) {
     dispatch(asyncActionError(e));
+    toast.error('Something went wrong');
   }
 };
 
