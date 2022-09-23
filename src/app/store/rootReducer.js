@@ -1,4 +1,4 @@
-import counterReducer from 'features/sandbox/testSlice';
+import { counterReducer } from 'features/sandbox/testSlice';
 import { combineReducers } from '@reduxjs/toolkit';
 import { eventReducer } from 'features/events/eventSlice';
 import { modalReducer } from 'app/common/modals/modalSlice';
