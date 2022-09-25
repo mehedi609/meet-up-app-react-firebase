@@ -4,6 +4,7 @@ import EventList from 'features/events/eventDashboard/EventList';
 import { selectEvent } from 'features/events/eventSlice';
 import { selectAsyncState } from 'app/async/asyncSlice';
 import EventListItemPlaceholder from 'features/events/eventDashboard/EventListItemPlaceholder';
+import EventFilters from 'features/events/eventDashboard/EventFilters';
 
 export default function EventDashboard() {
   const events = useSelector(selectEvent);
@@ -22,7 +23,7 @@ export default function EventDashboard() {
         )}
       </Grid.Column>
       <Grid.Column width={6}>
-        <h2>Event Filters</h2>
+        <EventFilters />
       </Grid.Column>
     </Grid>
   );
