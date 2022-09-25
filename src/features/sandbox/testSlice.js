@@ -1,4 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {
+  asyncActionError,
+  asyncActionFinish,
+  asyncActionStart,
+} from 'app/async/asyncSlice';
+import { delay } from 'app/common/util/util';
+import { toast } from 'react-toastify';
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -6,18 +13,43 @@ export const counterSlice = createSlice({
     value: 10,
   },
   reducers: {
-    increment(state, action) {
+    _increment(state, action) {
       state.value += action.payload;
     },
-    decrement(state, action) {
+    _decrement(state, action) {
       state.value -= action.payload;
     },
   },
 });
 
-export const { increment, decrement } = counterSlice.actions;
+const {
+  reducer,
+  actions: { _increment, _decrement },
+} = counterSlice;
+
+export const increment = (amount) => async (dispatch) => {
+  dispatch(asyncActionStart());
+  try {
+    await delay(1000);
+    dispatch(_increment(amount));
+    dispatch(asyncActionFinish());
+  } catch (e) {
+    dispatch(asyncActionError(e));
+  }
+};
+
+export const decrement = (amount) => async (dispatch) => {
+  dispatch(asyncActionStart());
+  try {
+    await delay(1000);
+    dispatch(_decrement(amount));
+    dispatch(asyncActionFinish());
+  } catch (e) {
+    dispatch(asyncActionError(e));
+    toast.error('Something went wrong');
+  }
+};
 
 export const selectCounter = (state) => state.counter.value;
 
-const counterReducer = counterSlice.reducer;
-export default counterReducer;
+export { reducer as counterReducer };

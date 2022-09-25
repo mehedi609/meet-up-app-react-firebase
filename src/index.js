@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-calendar/dist/Calendar.css';
 import 'app/layout/style.css';
 import App from 'app/layout/App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from 'app/store';
 import ScrollToTop from 'app/layout/ScrollToTop';
+import { loadEvents } from 'features/events/eventSlice';
+
+store.dispatch(loadEvents());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

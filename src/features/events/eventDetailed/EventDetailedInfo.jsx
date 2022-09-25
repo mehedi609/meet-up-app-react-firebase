@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Grid, Icon, Segment } from 'semantic-ui-react';
 import { format } from 'date-fns';
 import { config } from 'app/config';
-import EventDetailedMap from './EventDetailedMap';
+import EventDetailedMap from 'features/events/eventDetailed/EventDetailedMap';
 
 export default function EventDetailedInfo({ event }) {
   const [mapOpen, setMapOpenToggle] = useState(false);

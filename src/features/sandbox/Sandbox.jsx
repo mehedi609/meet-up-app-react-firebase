@@ -6,13 +6,17 @@ import {
 } from 'features/sandbox/testSlice';
 import { Button } from 'semantic-ui-react';
 import { openModal } from 'app/common/modals/modalSlice';
-import { config } from '../../app/config';
-import TestPlaceInput from './TestPlaceInput';
-import TestMap from './TestMap';
+import { config } from 'app/config';
+import TestPlaceInput from 'features/sandbox/TestPlaceInput';
+import TestMap from 'features/sandbox/TestMap';
 import { useState } from 'react';
+import { selectAsyncState } from 'app/async/asyncSlice';
 
 export default function Sandbox() {
   const value = useSelector(selectCounter);
+  const { loading } = useSelector(selectAsyncState);
+  const [target, setTarget] = useState(null);
+
   const dispatch = useDispatch();
   const defaultProps = {
     center: {
@@ -31,14 +35,24 @@ export default function Sandbox() {
     <div>
       <h1>Testing 123</h1>s<h3>The data is: {value}</h3>
       <Button
-        onClick={() => dispatch(increment(10))}
+        onClick={(e) => {
+          dispatch(increment(10));
+          setTarget(e.target.name);
+        }}
+        name="increment"
         content="Increment"
         color="green"
+        loading={loading && target === 'increment'}
       />
       <Button
-        onClick={() => dispatch(decrement(5))}
+        onClick={(e) => {
+          dispatch(decrement(5));
+          setTarget(e.target.name);
+        }}
+        name="decrement"
         content="Decrement"
         color="red"
+        loading={loading && target === 'decrement'}
       />
       <Button
         content="Open Modal"

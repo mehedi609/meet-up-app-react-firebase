@@ -16,7 +16,7 @@ import CustomSelectInput from 'app/common/form/CustomSelectInput';
 import { categoryOptions } from 'app/api/categoryOptions';
 import CustomDateInput from 'app/common/form/CustomDateInput';
 import { config } from 'app/config';
-import CustomPlaceInput from '../../../app/common/form/CustomPlaceInput';
+import CustomPlaceInput from 'app/common/form/CustomPlaceInput';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEvent).find(
