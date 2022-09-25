@@ -7,8 +7,8 @@ import {
 import { Button } from 'semantic-ui-react';
 import { openModal } from 'app/common/modals/modalSlice';
 import { config } from 'app/config';
-import TestPlaceInput from './TestPlaceInput';
-import TestMap from './TestMap';
+import TestPlaceInput from 'features/sandbox/TestPlaceInput';
+import TestMap from 'features/sandbox/TestMap';
 import { useState } from 'react';
 import { selectAsyncState } from 'app/async/asyncSlice';
 

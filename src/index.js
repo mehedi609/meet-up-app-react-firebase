@@ -9,6 +9,9 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from 'app/store';
 import ScrollToTop from 'app/layout/ScrollToTop';
+import { loadEvents } from 'features/events/eventSlice';
+
+store.dispatch(loadEvents());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

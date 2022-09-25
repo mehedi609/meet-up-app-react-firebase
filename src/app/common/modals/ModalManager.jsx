@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectModal } from './modalSlice';
+import { selectModal } from 'app/common/modals/modalSlice';
 import TestModal from 'features/sandbox/TestModal';
 import LoginForm from 'features/auth/LoginForm';
 

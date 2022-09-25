@@ -3,8 +3,8 @@ import {
   asyncActionError,
   asyncActionFinish,
   asyncActionStart,
-} from '../../app/async/asyncSlice';
-import { delay } from '../../app/common/util/util';
+} from 'app/async/asyncSlice';
+import { delay } from 'app/common/util/util';
 import { toast } from 'react-toastify';
 
 export const counterSlice = createSlice({
