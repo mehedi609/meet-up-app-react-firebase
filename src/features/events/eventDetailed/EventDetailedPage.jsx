@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
 import useFirestoreDoc from 'app/hooks/useFirestoreDoc';
 import EventDetailedHeader from 'features/events/eventDetailed/EventDetailedHeader';
 import EventDetailedInfo from 'features/events/eventDetailed/EventDetailedInfo';
@@ -15,7 +16,7 @@ export default function EventDetailedPage({ match }) {
   const event = useSelector(selectEventState).find(
     (evt) => evt.id === match.params.id,
   );
-  const { loading } = useSelector(selectAsyncState);
+  const { loading, error } = useSelector(selectAsyncState);
 
   useFirestoreDoc({
     query: () => listenToEventFromFirestore(match.params.id),
@@ -23,7 +24,10 @@ export default function EventDetailedPage({ match }) {
     deps: [dispatch, match.params.id],
   });
 
-  if (loading || !event) return <LoadingComponent content="Loading event..." />;
+  if (loading || (!event && !error))
+    return <LoadingComponent content="Loading event..." />;
+
+  if (error) return <Redirect to="/error" />;
 
   return (
     <Grid>
