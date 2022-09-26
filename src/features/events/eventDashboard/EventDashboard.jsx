@@ -1,44 +1,23 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
-import {
-  dataFromSnapshot,
-  getEventsFromFirestore,
-} from 'app/firebase/firestoreService';
+import { listenToEventsFromFirestore } from 'app/firebase/firestoreService';
 import EventListItemPlaceholder from 'features/events/eventDashboard/EventListItemPlaceholder';
 import EventList from 'features/events/eventDashboard/EventList';
 import EventFilters from 'features/events/eventDashboard/EventFilters';
 import { listenToEvents, selectEventState } from 'features/events/eventSlice';
-import {
-  asyncActionError,
-  asyncActionFinish,
-  asyncActionStart,
-  selectAsyncState,
-} from 'app/async/asyncSlice';
+import { selectAsyncState } from 'app/async/asyncSlice';
+import useFirestoreCollection from '../../../app/hooks/useFirestoreCollection';
 
 export default function EventDashboard() {
   const dispatch = useDispatch();
   const events = useSelector(selectEventState);
   const { loading } = useSelector(selectAsyncState);
 
-  useEffect(() => {
-    dispatch(asyncActionStart());
-    const unsubscribe = getEventsFromFirestore({
-      next: (snapshot) => {
-        const events = snapshot.docs.map((docSnapshot) =>
-          dataFromSnapshot(docSnapshot),
-        );
-        dispatch(listenToEvents(events));
-        dispatch(asyncActionFinish());
-      },
-      error: (err) => {
-        console.log('Error getting documents: ', err);
-        dispatch(asyncActionError(err));
-      },
-    });
-
-    return () => unsubscribe();
-  }, [dispatch]);
+  useFirestoreCollection({
+    query: () => listenToEventsFromFirestore(),
+    data: (events) => dispatch(listenToEvents(events)),
+    deps: [dispatch],
+  });
 
   return (
     <Grid>
