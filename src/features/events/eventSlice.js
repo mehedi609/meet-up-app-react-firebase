@@ -17,6 +17,9 @@ const eventSlice = createSlice({
     _loadEvents: (state, action) => {
       state.events = action.payload;
     },
+    listenToEvents: (state, action) => {
+      state.events = action.payload;
+    },
     _createEvent: (state, action) => {
       state.events.push(action.payload);
     },
@@ -43,10 +46,10 @@ const eventSlice = createSlice({
 
 const {
   reducer,
-  actions: { _loadEvents, _createEvent, _updateEvent, _deleteEvent },
+  actions: { _createEvent, _updateEvent, _deleteEvent, listenToEvents },
 } = eventSlice;
 
-export const loadEvents = () => async (dispatch) => {
+/*export const loadEvents = () => async (dispatch) => {
   dispatch(asyncActionStart());
   try {
     const events = await fetchSampleData();
@@ -56,14 +59,15 @@ export const loadEvents = () => async (dispatch) => {
     console.log(e);
     dispatch(asyncActionError(e));
   }
-};
+};*/
 
 export {
   _createEvent as createEvent,
   _deleteEvent as deleteEvent,
   _updateEvent as updateEvent,
+  listenToEvents,
 };
 
-export const selectEvent = (state) => state.event.events;
+export const selectEventState = (state) => state.event.events;
 
 export { reducer as eventReducer };

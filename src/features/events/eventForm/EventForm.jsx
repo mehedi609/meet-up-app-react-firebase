@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createEvent,
-  selectEvent,
+  selectEventState,
   updateEvent,
 } from 'features/events/eventSlice';
 import { Formik, Form } from 'formik';
@@ -19,7 +19,7 @@ import { config } from 'app/config';
 import CustomPlaceInput from 'app/common/form/CustomPlaceInput';
 
 export default function EventForm({ match, history }) {
-  const selectedEvent = useSelector(selectEvent).find(
+  const selectedEvent = useSelector(selectEventState).find(
     (evt) => evt.id === match.params.id,
   );
   const dispatch = useDispatch();

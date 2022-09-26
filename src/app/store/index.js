@@ -8,7 +8,7 @@ export default configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
-        ignoredActions: ['events/_loadEvents'],
+        ignoredActions: ['events/_loadEvents', 'events/listenToEvents'],
         // Ignore these field paths in all actions
         ignoredActionPaths: ['payload.date'],
         // Ignore these paths in the state
