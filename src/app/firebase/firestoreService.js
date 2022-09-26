@@ -1,11 +1,11 @@
-import { getFirestore, collection, Timestamp } from 'firebase/firestore';
+import { getFirestore, collection, Timestamp, doc } from 'firebase/firestore';
 // import { getAuth } from 'firebase/auth';
 import { app } from 'app/config/firebase';
 
 const db = getFirestore(app);
 // const auth = getAuth(app);
 
-export const eventsCollectionRef = collection(db, 'events');
+export const eventsRef = collection(db, 'events');
 
 export function dataFromSnapshot(snapshot) {
   if (!snapshot.exists()) return undefined;
@@ -23,4 +23,6 @@ export function dataFromSnapshot(snapshot) {
   };
 }
 
-export const listenToEventsFromFirestore = () => eventsCollectionRef;
+export const listenToEventsFromFirestore = () => eventsRef;
+
+export const listenToEventFromFirestore = (eventId) => doc(eventsRef, eventId);

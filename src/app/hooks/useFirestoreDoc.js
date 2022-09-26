@@ -8,18 +8,25 @@ import {
 } from 'app/async/asyncSlice';
 import { dataFromSnapshot } from 'app/firebase/firestoreService';
 
-export default function useFirestoreCollection({ query, data, deps }) {
+export default function useFirestoreDoc({ query, data, deps }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(asyncActionStart());
     const unsubscribe = onSnapshot(query(), {
       next: (snapshot) => {
-        const docs = snapshot.docs.map((docSnapshot) =>
-          dataFromSnapshot(docSnapshot),
-        );
-        data(docs);
-        dispatch(asyncActionFinish());
+        const doc = dataFromSnapshot(snapshot);
+        if (doc) {
+          data(doc);
+          dispatch(asyncActionFinish());
+        } else {
+          dispatch(
+            asyncActionError({
+              code: 'not-found',
+              message: 'Could not find document',
+            }),
+          );
+        }
       },
       error: (err) => {
         console.log('Error getting documents: ', err);

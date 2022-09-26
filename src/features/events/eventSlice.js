@@ -1,10 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  asyncActionError,
-  asyncActionFinish,
-  asyncActionStart,
-} from 'app/async/asyncSlice';
-import { fetchSampleData } from 'app/api/mockApi';
 
 const initialState = {
   events: [],
@@ -19,6 +13,9 @@ const eventSlice = createSlice({
     },
     listenToEvents: (state, action) => {
       state.events = action.payload;
+    },
+    listenToEvent: (state, action) => {
+      state.events.push(action.payload);
     },
     _createEvent: (state, action) => {
       state.events.push(action.payload);
@@ -46,7 +43,13 @@ const eventSlice = createSlice({
 
 const {
   reducer,
-  actions: { _createEvent, _updateEvent, _deleteEvent, listenToEvents },
+  actions: {
+    _createEvent,
+    _updateEvent,
+    _deleteEvent,
+    listenToEvents,
+    listenToEvent,
+  },
 } = eventSlice;
 
 /*export const loadEvents = () => async (dispatch) => {
@@ -66,6 +69,7 @@ export {
   _deleteEvent as deleteEvent,
   _updateEvent as updateEvent,
   listenToEvents,
+  listenToEvent,
 };
 
 export const selectEventState = (state) => state.event.events;
