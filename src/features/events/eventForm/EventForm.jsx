@@ -1,10 +1,11 @@
 /*global google*/
 import { Button, Header, Segment } from 'semantic-ui-react';
 import cuid from 'cuid';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createEvent,
+  listenToEvent,
   selectEventState,
   updateEvent,
 } from 'features/events/eventSlice';
@@ -17,12 +18,28 @@ import { categoryOptions } from 'app/api/categoryOptions';
 import CustomDateInput from 'app/common/form/CustomDateInput';
 import { config } from 'app/config';
 import CustomPlaceInput from 'app/common/form/CustomPlaceInput';
+import useFirestoreDoc from 'app/hooks/useFirestoreDoc';
+import { listenToEventFromFirestore } from 'app/firebase/firestoreService';
+import LoadingComponent from 'app/layout/LoadingComponent';
+import { selectAsyncState } from 'app/async/asyncSlice';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEventState).find(
     (evt) => evt.id === match.params.id,
   );
+  const { loading, error } = useSelector(selectAsyncState);
   const dispatch = useDispatch();
+
+  useFirestoreDoc({
+    query: () => listenToEventFromFirestore(match.params.id),
+    data: (event) => dispatch(listenToEvent(event)),
+    deps: [dispatch, match.params.id],
+  });
+
+  if (loading || (!selectedEvent && !error))
+    return <LoadingComponent content="Loading event..." />;
+
+  if (error) return <Redirect to="/error" />;
 
   const initialValues = selectedEvent ?? {
     title: '',
