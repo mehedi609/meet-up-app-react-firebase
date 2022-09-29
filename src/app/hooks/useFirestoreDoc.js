@@ -8,10 +8,16 @@ import {
 } from 'app/async/asyncSlice';
 import { dataFromSnapshot } from 'app/firebase/firestoreService';
 
-export default function useFirestoreDoc({ query, data, deps }) {
+export default function useFirestoreDoc({
+  query,
+  data,
+  deps,
+  shouldExecute = true,
+}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!shouldExecute) return;
     dispatch(asyncActionStart());
     const unsubscribe = onSnapshot(query(), {
       next: (snapshot) => {

@@ -6,7 +6,7 @@ import EventDetailedHeader from 'features/events/eventDetailed/EventDetailedHead
 import EventDetailedInfo from 'features/events/eventDetailed/EventDetailedInfo';
 import EventDetailedChat from 'features/events/eventDetailed/EventDetailedChat';
 import EventDetailedSidebar from 'features/events/eventDetailed/EventDetailedSidebar';
-import { listenToEvent, selectEventState } from 'features/events/eventSlice';
+import { listenToEvents, selectEventState } from 'features/events/eventSlice';
 import { listenToEventFromFirestore } from 'app/firebase/firestoreService';
 import { selectAsyncState } from 'app/async/asyncSlice';
 import LoadingComponent from 'app/layout/LoadingComponent';
@@ -20,7 +20,7 @@ export default function EventDetailedPage({ match }) {
 
   useFirestoreDoc({
     query: () => listenToEventFromFirestore(match.params.id),
-    data: (event) => dispatch(listenToEvent(event)),
+    data: (event) => dispatch(listenToEvents([event])),
     deps: [dispatch, match.params.id],
   });
 

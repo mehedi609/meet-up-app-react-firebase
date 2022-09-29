@@ -1,14 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { Button, Icon, Item, List, Segment } from 'semantic-ui-react';
-import EventListAttendee from 'features/events/eventDashboard/EventListAttendee';
-import { deleteEvent } from 'features/events/eventSlice';
 import { format } from 'date-fns';
+import { Button, Icon, Item, Label, List, Segment } from 'semantic-ui-react';
+import EventListAttendee from 'features/events/eventDashboard/EventListAttendee';
 import { config } from 'app/config';
+import { deleteEventInFirestore } from 'app/firebase/firestoreService';
 
 export default function EventListItem({ event }) {
-  const dispatch = useDispatch();
-
   return (
     <Segment.Group>
       <Segment>
@@ -18,6 +15,14 @@ export default function EventListItem({ event }) {
             <Item.Content>
               <Item.Header content={event.title} />
               <Item.Description>Hosted by {event.hostedBy}</Item.Description>
+              {event.isCancelled && (
+                <Label
+                  style={{ top: '-40px' }}
+                  ribbon="right"
+                  color="red"
+                  content="This event has been cancelled"
+                />
+              )}
             </Item.Content>
           </Item>
         </Item.Group>
@@ -42,7 +47,7 @@ export default function EventListItem({ event }) {
           color="red"
           floated="right"
           content="Delete"
-          onClick={() => dispatch(deleteEvent(event.id))}
+          onClick={async () => await deleteEventInFirestore(event.id)}
         />
         <Button
           color="teal"

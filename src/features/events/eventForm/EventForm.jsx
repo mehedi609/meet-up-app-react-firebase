@@ -1,14 +1,8 @@
 /*global google*/
 import { Button, Header, Segment } from 'semantic-ui-react';
-import cuid from 'cuid';
 import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  createEvent,
-  listenToEvent,
-  selectEventState,
-  updateEvent,
-} from 'features/events/eventSlice';
+import { listenToEvents, selectEventState } from 'features/events/eventSlice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import CustomTextInput from 'app/common/form/CustomTextInput';
@@ -19,9 +13,15 @@ import CustomDateInput from 'app/common/form/CustomDateInput';
 import { config } from 'app/config';
 import CustomPlaceInput from 'app/common/form/CustomPlaceInput';
 import useFirestoreDoc from 'app/hooks/useFirestoreDoc';
-import { listenToEventFromFirestore } from 'app/firebase/firestoreService';
+import {
+  addEventToFirestore,
+  cancelEventToggle,
+  listenToEventFromFirestore,
+  updateEventInFirestore,
+} from 'app/firebase/firestoreService';
 import LoadingComponent from 'app/layout/LoadingComponent';
 import { selectAsyncState } from 'app/async/asyncSlice';
+import { toast } from 'react-toastify';
 
 export default function EventForm({ match, history }) {
   const selectedEvent = useSelector(selectEventState).find(
@@ -32,11 +32,12 @@ export default function EventForm({ match, history }) {
 
   useFirestoreDoc({
     query: () => listenToEventFromFirestore(match.params.id),
-    data: (event) => dispatch(listenToEvent(event)),
+    data: (event) => dispatch(listenToEvents([event])),
     deps: [dispatch, match.params.id],
+    shouldExecute: !!match.params.id,
   });
 
-  if (loading || (!selectedEvent && !error))
+  if (loading || (!selectedEvent && !error && !!match.params.id))
     return <LoadingComponent content="Loading event..." />;
 
   if (error) return <Redirect to="/error" />;
@@ -56,19 +57,17 @@ export default function EventForm({ match, history }) {
     date: '',
   };
 
-  function handleFormSubmit(values) {
-    selectedEvent
-      ? dispatch(updateEvent({ ...selectedEvent, ...values }))
-      : dispatch(
-          createEvent({
-            ...values,
-            id: cuid(),
-            hostedBy: 'Bob',
-            attendees: [],
-            hostPhotoURL: '/assets/user.png',
-          }),
-        );
-    history.push('/events');
+  async function handleFormSubmit(values, setSubmitting) {
+    try {
+      selectedEvent
+        ? await updateEventInFirestore(values)
+        : await addEventToFirestore(values);
+      history.push('/events');
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const validationSchema = Yup.object({
@@ -89,7 +88,9 @@ export default function EventForm({ match, history }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => handleFormSubmit(values)}
+        onSubmit={async (values, { setSubmitting }) =>
+          await handleFormSubmit(values, setSubmitting)
+        }
       >
         {({ isValid, dirty, isSubmitting, values }) => (
           <Form className="ui form">
@@ -124,6 +125,19 @@ export default function EventForm({ match, history }) {
               showTimeSelect
               dateFormat={config.DATE.DATE_FORMAT}
             />
+            {selectedEvent && (
+              <Button
+                type="button"
+                floated="left"
+                color={selectedEvent.isCancelled ? 'green' : 'red'}
+                content={
+                  selectedEvent.isCancelled
+                    ? 'Reactivate event'
+                    : 'Cancel Event'
+                }
+                onClick={() => cancelEventToggle(selectedEvent)}
+              />
+            )}
 
             <Button
               type="submit"
