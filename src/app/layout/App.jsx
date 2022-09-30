@@ -1,4 +1,5 @@
 import { Route, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { Container } from 'semantic-ui-react';
 import NavBar from 'features/nav/Navbar';
 import EventDashboard from 'features/events/eventDashboard/EventDashboard';
@@ -7,7 +8,7 @@ import EventDetailedPage from 'features/events/eventDetailed/EventDetailedPage';
 import EventForm from 'features/events/eventForm/EventForm';
 import Sandbox from 'features/sandbox/Sandbox';
 import ModalManager from 'app/common/modals/ModalManager';
-import { ToastContainer } from 'react-toastify';
+import ErrorComponent from 'app/common/errors/ErrorComponent';
 
 function App() {
   const location = useLocation();
@@ -32,6 +33,7 @@ function App() {
                 key={location.key}
               />
               <Route exact path="/sandbox" component={Sandbox} />
+              <Route exact path="/error" component={ErrorComponent} />
             </Container>
           </>
         )}
