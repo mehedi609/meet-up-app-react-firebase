@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../app/config/firebase';
+import { auth } from 'app/config/firebase';
 
 const initialState = {
   authenticated: false,

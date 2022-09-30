@@ -6,7 +6,7 @@ import EventList from 'features/events/eventDashboard/EventList';
 import EventFilters from 'features/events/eventDashboard/EventFilters';
 import { listenToEvents, selectEventState } from 'features/events/eventSlice';
 import { selectAsyncState } from 'app/async/asyncSlice';
-import useFirestoreCollection from '../../../app/hooks/useFirestoreCollection';
+import useFirestoreCollection from 'app/hooks/useFirestoreCollection';
 
 export default function EventDashboard() {
   const dispatch = useDispatch();

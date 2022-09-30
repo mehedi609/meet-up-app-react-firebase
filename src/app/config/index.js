@@ -4,6 +4,7 @@ export const config = {
   },
   MODAL: {
     LOGIN_MODAL: 'LoginForm',
+    REGISTER_MODAL: 'RegisterForm',
     TEST_MODAL: 'TestModal',
   },
 };

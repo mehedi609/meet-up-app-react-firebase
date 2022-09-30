@@ -8,11 +8,15 @@ export default configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
-        ignoredActions: ['events/_loadEvents', 'events/listenToEvents'],
+        ignoredActions: [
+          'events/_loadEvents',
+          'events/listenToEvents',
+          'auth/_signInUser',
+        ],
         // Ignore these field paths in all actions
         ignoredActionPaths: ['payload.date'],
         // Ignore these paths in the state
-        ignoredPaths: ['event.events'],
+        ignoredPaths: ['event.events', 'auth.currentUser'],
       },
     }).concat(logger),
   devTools: process.env.NODE_ENV !== 'production',

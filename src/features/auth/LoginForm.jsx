@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react';
 import CustomTextInput from 'app/common/form/CustomTextInput';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'app/common/modals/modalSlice';
-import { signInWithEmail } from '../../app/firebase/firebaseService';
+import { signInWithEmail } from 'app/firebase/firebaseService';
 
 export default function LoginForm() {
   const dispatch = useDispatch();

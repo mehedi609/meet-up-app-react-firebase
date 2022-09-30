@@ -2,7 +2,7 @@ import { Dropdown, Image, Menu } from 'semantic-ui-react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectAuthState } from 'features/auth/authSlice';
-import { signOutFirebase } from '../../app/firebase/firebaseService';
+import { signOutFirebase } from 'app/firebase/firebaseService';
 
 export default function SignedInMenu() {
   const history = useHistory();
