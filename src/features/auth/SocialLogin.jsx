@@ -1,6 +1,17 @@
 import { Button } from 'semantic-ui-react';
+import { useDispatch } from 'react-redux';
+import { closeModal } from 'app/common/modals/modalSlice';
+import { socialLogin } from 'app/firebase/firebaseService';
+import { config } from 'app/config';
 
 export default function SocialLogin() {
+  const dispatch = useDispatch();
+
+  async function handleSocialLogin(provider) {
+    dispatch(closeModal());
+    await socialLogin(provider);
+  }
+
   return (
     <>
       <Button
@@ -15,6 +26,7 @@ export default function SocialLogin() {
         fluid
         color="google plus"
         content="Login with Google"
+        onClick={() => handleSocialLogin(config.SOCIAL_LOGIN.GOOGLE)}
       />
     </>
   );

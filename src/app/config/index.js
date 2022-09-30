@@ -7,4 +7,8 @@ export const config = {
     REGISTER_MODAL: 'RegisterForm',
     TEST_MODAL: 'TestModal',
   },
+  SOCIAL_LOGIN: {
+    GOOGLE: 'google',
+    FACEBOOK: 'facebook',
+  },
 };

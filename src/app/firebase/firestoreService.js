@@ -69,5 +69,6 @@ export const setUserProfileData = (user) =>
   setDoc(doc(usersRef, user.uid), {
     displayName: user.displayName,
     email: user.email,
+    photoURL: user.photoURL || null,
     createdAt: serverTimestamp(),
   });
