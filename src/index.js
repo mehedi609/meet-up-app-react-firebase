@@ -9,6 +9,9 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from 'app/store';
 import ScrollToTop from 'app/layout/ScrollToTop';
+import { verifyAuth } from './features/auth/authSlice';
+
+store.dispatch(verifyAuth());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

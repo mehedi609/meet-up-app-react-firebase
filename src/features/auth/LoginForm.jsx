@@ -4,13 +4,13 @@ import { Form, Formik } from 'formik';
 import { Button } from 'semantic-ui-react';
 import CustomTextInput from 'app/common/form/CustomTextInput';
 import { useDispatch } from 'react-redux';
-import { signInUser } from 'features/auth/authSlice';
 import { closeModal } from 'app/common/modals/modalSlice';
+import { signInWithEmail } from '../../app/firebase/firebaseService';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
 
-  const initialValues = { email: '', password: '' };
+  const initialValues = { email: '', password: 'password' };
   const validationSchema = Yup.object({
     email: Yup.string().required().email(),
     password: Yup.string().required(),
@@ -21,10 +21,15 @@ export default function LoginForm() {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          dispatch(signInUser(values));
-          setSubmitting(false);
-          dispatch(closeModal());
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            await signInWithEmail(values);
+            dispatch(closeModal());
+          } catch (e) {
+            console.log(e);
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
         {({ dirty, isSubmitting, isValid }) => (
