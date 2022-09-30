@@ -9,6 +9,8 @@ import {
   arrayUnion,
   query,
   orderBy,
+  setDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 // import { getAuth } from 'firebase/auth';
 import { app } from 'app/config/firebase';
@@ -18,6 +20,7 @@ const db = getFirestore(app);
 // const auth = getAuth(app);
 
 export const eventsRef = collection(db, 'events');
+export const usersRef = collection(db, 'users');
 
 export const dataFromSnapshot = (snapshot) => {
   if (!snapshot.exists()) return undefined;
@@ -61,3 +64,10 @@ export const deleteEventInFirestore = (eventId) =>
 
 export const cancelEventToggle = (event) =>
   updateDoc(doc(eventsRef, event.id), { isCancelled: !event.isCancelled });
+
+export const setUserProfileData = (user) =>
+  setDoc(doc(usersRef, user.uid), {
+    displayName: user.displayName,
+    email: user.email,
+    createdAt: serverTimestamp(),
+  });
