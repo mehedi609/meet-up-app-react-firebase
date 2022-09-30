@@ -13,11 +13,7 @@ export const signOutFirebase = () => signOut(auth);
 
 export const signUpInFirebase = async (creds) => {
   try {
-    await createUserWithEmailAndPassword(
-      auth,
-      creds.email,
-      creds.password,
-    );
+    await createUserWithEmailAndPassword(auth, creds.email, creds.password);
 
     await updateProfile(auth.currentUser, {
       displayName: creds.displayName,

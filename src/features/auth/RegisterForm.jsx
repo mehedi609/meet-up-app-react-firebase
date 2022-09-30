@@ -1,7 +1,7 @@
 import ModalWrapper from 'app/common/modals/ModalWrapper';
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
-import { Button } from 'semantic-ui-react';
+import { Button, Label } from 'semantic-ui-react';
 import CustomTextInput from 'app/common/form/CustomTextInput';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'app/common/modals/modalSlice';
@@ -22,18 +22,25 @@ export default function RegisterForm() {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
             await signUpInFirebase(values);
             dispatch(closeModal());
           } catch (e) {
-            console.log(e);
+            // console.log({ code: e.code, message: e.message });
+            if (e.code && e.code.includes('auth/')) {
+              const message = e.code.slice(5).split('-').join(' ');
+              console.log(message);
+              setErrors({ auth: message });
+            } else {
+              setErrors({ auth: 'Something went wrong' });
+            }
           } finally {
             setSubmitting(false);
           }
         }}
       >
-        {({ dirty, isSubmitting, isValid }) => (
+        {({ dirty, isSubmitting, isValid, errors }) => (
           <Form className="ui form">
             <CustomTextInput
               name="displayName"
@@ -48,6 +55,16 @@ export default function RegisterForm() {
               placeholder="Enter your password"
               type="password"
             />
+
+            {errors.auth && (
+              <Label
+                basic
+                color="red"
+                style={{ marginBottom: 10 }}
+                content={errors.auth}
+              />
+            )}
+
             <Button
               loading={isSubmitting}
               disabled={!isValid || !dirty || isSubmitting}
